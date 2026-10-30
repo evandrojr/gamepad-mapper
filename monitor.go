@@ -31,8 +31,12 @@ func runMonitor(d *Device, preset Preset) {
 				return
 			}
 			action, ok := buttonAction(ev.Code)
+			label := psButtonName(ev.Code)
 			keyInfo := ""
 			if ok {
+				if actionLabel := actionLabels[action]; actionLabel != "" {
+					label = actionLabel
+				}
 				key := preset.Keys[action]
 				if key == 0 {
 					keyInfo = " -> (sem tecla)"
@@ -44,7 +48,7 @@ func runMonitor(d *Device, preset Preset) {
 			if ev.Value == 0 {
 				state = "SOLTO      "
 			}
-			fmt.Printf("%s  %-24s %-18s%s\n", state, psButtonName(ev.Code), buttonLinuxName(ev.Code), keyInfo)
+			fmt.Printf("%s  %-24s %-18s%s\n", state, label, buttonLinuxName(ev.Code), keyInfo)
 		case evAbs:
 			printAxis(ev, p, preset, states, d)
 		}
