@@ -83,7 +83,7 @@ func launcherPreset() Preset {
 		Name: "launcher",
 		Keys: map[string]uint16{
 			"cross": keySpace, "circle": keyLShift, "square": btnLeft, "triangle": btnRight,
-			"l1": keyQ, "r1": keyE, "l2": keyR, "r2": btnForward, "l3": 0, "r3": 0,
+			"l1": keyQ, "r1": keyE, "l2": keyR, "r2": btnForward, "l3": keyZ, "r3": keyX,
 			"options": keyTab, "share": keyEsc, "ps": keyInsert, "touchpad": keyP,
 			"up": key1, "down": key3, "left": key4, "right": key2,
 			"ls_up": keyW, "ls_down": keyS, "ls_left": keyA, "ls_right": keyD,
@@ -162,11 +162,6 @@ func (p Preset) describe() {
 	fmt.Printf("Preset: %s\n", p.Name)
 	for _, action := range actionOrder {
 		key := p.Keys[action]
-		if action == "l3" || action == "r3" {
-			if key == 0 {
-				continue
-			}
-		}
 		label := actionLabels[action]
 		if label == "" {
 			label = action
