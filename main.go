@@ -44,6 +44,7 @@ func main() {
 	presetName := flag.String("preset", "launcher", "mapa de teclas: launcher ou port")
 	mapSpec := flag.String("map", "", "sobrescreve teclas: cross=space,l1=1,up=i,...")
 	grab := flag.Bool("grab", true, "captura o controle para o jogo nao Receber entrada dupla")
+	verbose := flag.Bool("verbose", false, "imprime as teclas enviadas ao jogo em tempo real")
 	deadzone := flag.Float64("deadzone", 0.35, "zona morta dos analogicos (0.0 a 1.0)")
 	wait := flag.Bool("wait", true, "espera um controle aparecer")
 	flag.Usage = usage
@@ -89,13 +90,13 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Erro: -deadzone deve ficar entre 0.05 e 0.95")
 		os.Exit(1)
 	}
-	if err := runMapper(d, preset, *grab, *deadzone); err != nil {
+	if err := runMapper(d, preset, *grab, *deadzone, *verbose); err != nil {
 		fmt.Fprintln(os.Stderr, "Erro:", err)
 		os.Exit(1)
 	}
 }
 
-func runMapper(d *Device, preset Preset, grab bool, deadzone float64) error {
+func runMapper(d *Device, preset Preset, grab bool, deadzone float64, verbose bool) error {
 	p := detectProfile(d)
 	fmt.Printf("Controle: %s (%s)\n", d.Name, d.Path)
 	fmt.Printf("Perfil:   %s\n", p.describe())
@@ -118,7 +119,7 @@ func runMapper(d *Device, preset Preset, grab bool, deadzone float64) error {
 	}
 	fmt.Println("Aperte Ctrl+C para sair.")
 
-	m := newMapper(d, p, preset, vi, deadzone)
+	m := newMapper(d, p, preset, vi, deadzone, verbose)
 	m.initializeState()
 
 	err = runWithStop(func(stop <-chan struct{}) error {

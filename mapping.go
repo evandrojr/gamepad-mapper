@@ -262,9 +262,10 @@ type mapper struct {
 	hatX        int
 	hatY        int
 	deadzone    float64
+	verbose     bool
 }
 
-func newMapper(d *Device, p profile, preset Preset, vi *virtualInput, deadzone float64) *mapper {
+func newMapper(d *Device, p profile, preset Preset, vi *virtualInput, deadzone float64, verbose bool) *mapper {
 	return &mapper{
 		dev:         d,
 		profile:     p,
@@ -277,6 +278,7 @@ func newMapper(d *Device, p profile, preset Preset, vi *virtualInput, deadzone f
 		actionCount: make(map[string]int),
 		buttonSeen:  make(map[string]bool),
 		deadzone:    deadzone,
+		verbose:     verbose,
 	}
 }
 
@@ -293,6 +295,9 @@ func (m *mapper) setSource(source string, key uint16, active bool) {
 		m.keyRefs[key]++
 		if m.keyRefs[key] == 1 {
 			_ = m.vi.Key(key, true)
+			if m.verbose {
+				fmt.Printf("TECLA DOWN %-16s (%s)\n", keyName(key), source)
+			}
 		}
 		return
 	}
@@ -307,6 +312,9 @@ func (m *mapper) setSource(source string, key uint16, active bool) {
 	if m.keyRefs[current] <= 0 {
 		delete(m.keyRefs, current)
 		_ = m.vi.Key(current, false)
+		if m.verbose {
+			fmt.Printf("TECLA UP   %-16s (%s)\n", keyName(current), source)
+		}
 	}
 }
 
