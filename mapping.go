@@ -189,7 +189,7 @@ var actionByCode = map[uint16]string{
 	btnSelect: "share", btnStart: "options", btnMode: "ps", btnTouch: "touchpad",
 	btnDpadUp: "up", btnDpadDown: "down", btnDpadLeft: "left", btnDpadRight: "right",
 	btnTrigger: "triangle", btnThumb: "circle", btnThumb2: "cross", btnTop: "square",
-	btnTop2: "l1", btnPinkie: "r1", btnBase: "l2", btnBase2: "r2",
+	btnBase: "l1", btnBase2: "r1", btnTop2: "l2", btnPinkie: "r2",
 	btnBase3: "share", btnBase4: "options", btnBase5: "l3", btnBase6: "r3",
 	btnTriggerHappy1: "up", btnTriggerHappy2: "down",
 	btnTriggerHappy3: "left", btnTriggerHappy4: "right",
